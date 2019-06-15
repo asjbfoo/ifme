@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 class MeetingsController < ApplicationController
   include MeetingsHelper
-  include MeetingFormHelper
+  include MeetingsFormHelper
   before_action :set_meeting, only: %i[show edit update destroy]
 
   # GET /meetings/1
   def show
-    @meeting = Meeting.friendly.find(params[:id])
     if @meeting.member?(current_user)
       @comments = generate_comments(@meeting.comments.order(created_at: :desc))
     elsif !@meeting.group.member?(current_user)
@@ -17,36 +16,25 @@ class MeetingsController < ApplicationController
   # GET /meetings/new
   def new
     @group = Group.find_by(id: params[:group_id])
-    redirect_unless_leader_for(@group)
+    redirect_unless_leader_for(@group) && return
     @meeting = Meeting.new
   end
 
   # GET /meetings/1/edit
   def edit
-    redirect_unless_leader_for(@meeting.group)
+    redirect_unless_leader_for(@meeting.group) && return
     @meeting_members = @meeting.members
   end
 
   # POST /meetings
-  # rubocop:disable MethodLength
   def create
     @meeting = Meeting.new(meeting_params)
     @group = Group.find_by(id: meeting_params[:group_id])
-    redirect_unless_leader_for(@group)
-    if @meeting.save
-      meeting_member = @meeting.meeting_members.new(
-        user_id: current_user.id, leader: true
-      )
-      if meeting_member.save
-        # Notify group members that you created a new meeting
-        send_notification(@meeting, @meeting.group.members, 'new_meeting')
-        redirect_to group_path(@group.id)
-      end
-    else
-      render :new
-    end
+    redirect_unless_leader_for(@group) && return
+
+    render :new unless @meeting.save
+    create_meeting_member
   end
-  # rubocop:enable MethodLength
 
   # PATCH/PUT /meetings/1
   def update
@@ -89,9 +77,9 @@ class MeetingsController < ApplicationController
 
   # DELETE /meetings/1
   def destroy
-    redirect_unless_leader_for(@meeting.group)
+    redirect_unless_leader_for(@meeting.group) && return
     # Notify group members that the meeting has been deleted
-    send_notification(@meeting, group.members, 'remove_meeting')
+    send_notification(@meeting, @meeting.group.members, 'remove_meeting')
     # Remove corresponding meeting members
     @meeting.meeting_members.destroy_all
     @meeting.destroy
@@ -124,5 +112,17 @@ class MeetingsController < ApplicationController
       type: type,
       members: members
     )
+  end
+
+  def create_meeting_member
+    meeting_member = @meeting.meeting_members.new(
+      user_id: current_user.id, leader: true
+    )
+
+    return unless meeting_member.save
+
+    # Notify group members that you created a new meeting
+    send_notification(@meeting, @meeting.group.members, 'new_meeting')
+    redirect_to group_path(@group.id)
   end
 end

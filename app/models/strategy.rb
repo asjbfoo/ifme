@@ -3,7 +3,7 @@
 #
 # Table name: strategies
 #
-#  id           :integer          not null, primary key
+#  id           :bigint(8)        not null, primary key
 #  user_id      :integer
 #  category     :text
 #  description  :text
@@ -18,6 +18,7 @@
 
 class Strategy < ApplicationRecord
   include Viewer
+  include CommonMethods
   extend FriendlyId
 
   friendly_id :name

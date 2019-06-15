@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import { Input, TYPES as INPUT_TYPES } from '../Input';
-import type { Props as InputProps } from '../Input';
+import { Input } from '../Input';
+import { TYPES as INPUT_TYPES } from '../Input/utils';
+import type { Props as InputProps } from '../Input/utils';
 import { REQUIRES_DEFAULT } from '../Input/InputDefault';
 import { QuickCreate } from '../../widgets/QuickCreate';
 import type { Props as QuickCreateProps } from '../../widgets/QuickCreate';
@@ -98,6 +99,7 @@ export class Form extends React.Component<Props, State> {
           error={input.error}
           value={input.value}
           readOnly={input.readOnly}
+          copyOnClick={input.copyOnClick}
           disabled={input.disabled}
           required={input.required}
           info={input.info}
@@ -144,7 +146,7 @@ export class Form extends React.Component<Props, State> {
     );
   };
 
-  displayInputs = () => {
+  displayInputs = (): any => {
     const { inputs } = this.state;
     return inputs.map((input: any) => {
       if (INPUT_TYPES.includes(input.type)) {

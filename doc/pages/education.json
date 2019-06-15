@@ -199,7 +199,7 @@
   },
   {
     "name": "Mental Health Knowledge Base",
-    "link": "https://mhwkb.github.io/",
+    "link": "https://mentalhealth-kb.net/",
     "tags": ["directory", "learning"],
     "languages": ["en"]
   },
@@ -240,12 +240,6 @@
     "languages": ["en"]
   },
   {
-    "name": "Redefine Enough",
-    "link": "https://www.redefineenough.com",
-    "tags": ["podcast", "blog", "black_women", "women_of_colour"],
-    "languages": ["en"]
-  },
-  {
     "name": "Rise",
     "link": "http://www.risenow.us/",
     "tags": ["sexual_assault_survivors", "political_movement"],
@@ -267,6 +261,18 @@
     "name": "The School of Life",
     "link": "https://www.theschooloflife.com/",
     "tags": ["videos", "blog", "learning", "ios"],
+    "languages": ["en"]
+  },
+  {
+    "name": "A Close Look at PTSD Among Aging Adults",
+    "link": "https://www.seniorliving.org/research/ptsd-aging-adults/",
+    "tags": ["ptsd", "senior_citizens"],
+    "languages": ["en"]
+  },
+  {
+    "name": "Hers Journal",
+    "link": "https://www.forhers.com/blog",
+    "tags": ["sexual_health", "women", "blog"],
     "languages": ["en"]
   }
 ]

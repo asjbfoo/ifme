@@ -11,14 +11,14 @@ describe PagesController, type: :controller do
       let(:user) { create(:user) }
       include_context :logged_in_user
 
-      it 'if has no stories' do
+      it 'has no stories' do
         list = double
         expect(Kaminari).to receive(:paginate_array).and_return(list)
         expect(list).to receive(:page)
         get :home
       end
 
-      it 'if have stories' do
+      it 'has stories' do
         create(:strategy, user_id: user.id)
         categories = create_list(:category, 2, user_id: user.id)
         moods = create_list(:mood, 2, user_id: user.id)
@@ -55,6 +55,17 @@ describe PagesController, type: :controller do
       expect(JSON).to receive(:parse).with(contributors_file).and_return(data)
       expect(data).to receive(:sort_by!)
       get :contribute
+    end
+  end
+
+  describe 'GET #home_data' do
+    let(:user) { create(:user) }
+    let(:moment) { create(:moment, user: user) }
+    include_context :logged_in_user
+    before { get :home_data, params: { page: 1, id: moment.id }, format: :json }
+
+    it 'returns a response with the correct path' do
+      expect(JSON.parse(response.body)['data'].first['link']).to eq moment_path(moment)
     end
   end
 
@@ -123,6 +134,20 @@ describe PagesController, type: :controller do
   end
 
   describe 'GET #resources' do
+    describe 'when sending filter params' do
+      it 'filters the aforementioned resources' do
+        get :resources, params: { filter: %w[ADD english] }
+
+        expect(assigns(:keywords)).to match_array(%w[ADD English])
+      end
+
+      it 'filters only existing resources' do
+        get :resources, params: { filter: %w[ADD someUnexistentTag] }
+
+        expect(assigns(:keywords)).to match_array(['ADD'])
+      end
+    end
+
     it 'respond to request' do
       get :resources
       expect(response).to be_successful

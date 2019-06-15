@@ -10,11 +10,12 @@ import { StoryBy } from './StoryBy';
 import type { Props as StoryByProps } from './StoryBy';
 import { StoryCategories } from './StoryCategories';
 import { StoryMoods } from './StoryMoods';
+import { StoryMedication } from './StoryMedication';
 import css from './Story.scss';
 
 export type Props = {
   name: string,
-  link: string,
+  link?: string,
   date?: string,
   draft?: string,
   actions?: Actions,
@@ -23,6 +24,7 @@ export type Props = {
   storyBy?: StoryByProps,
   storyType?: string,
   body?: any,
+  medicationBody?: any,
 };
 
 const header = (
@@ -30,7 +32,7 @@ const header = (
   actions: ?Actions,
   draft: ?string,
   name: string,
-  link: string,
+  link: ?string,
 ) => (
   <div className={css.header}>
     <div className={css.gridRowSpaceBetween}>
@@ -92,6 +94,7 @@ export const Story = (props: Props) => {
     name,
     link,
     body,
+    medicationBody,
   } = props;
   const condensed = !storyBy && !storyType;
   return (
@@ -99,6 +102,7 @@ export const Story = (props: Props) => {
       {header(condensed, actions, draft, name, link)}
       {date && <StoryDate date={date} />}
       {body && <div className={css.body}>{renderHTML(body)}</div>}
+      {medicationBody && <StoryMedication {...medicationBody} />}
       {footer(categories, moods, storyBy, storyType, actions)}
     </div>
   );

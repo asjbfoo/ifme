@@ -23,6 +23,25 @@ module PagesHelper
     html.html_safe
   end
 
+  def home_data_json
+    {
+      data: moments_or_strategy_props(@stories),
+      lastPage: @stories.last_page?
+    }
+  end
+
+  def setup_stories
+    @stories = Kaminari.paginate_array(get_stories(current_user, true))
+                       .page(params[:page])
+    @stories&.select! do |story|
+      current_user.id == story.user_id ||
+        (
+          (story.viewers.include?(current_user.id) &&
+          current_user.mutual_allies?(User.find_by(id: story.user_id)))
+        )
+    end
+  end
+
   private
 
   def valid_hash?(data_type, data)
@@ -30,16 +49,10 @@ module PagesHelper
                   data['link'].is_a?(String)
     return false unless basic_check
 
-    data_type_check(data_type, data)
+    valid_data_type?(data_type, data)
   end
 
-  def data_type_check(data_type, data)
-    if data_type == 'partners'
-      data_type_check = data['image_link'].is_a?(String)
-    elsif data_type == 'resources'
-      data_type_check = data['tags'].is_a?(Array) &&
-                        data['languages'].is_a?(Array)
-    end
-    data_type_check
+  def valid_data_type?(data_type, data)
+    data['image_link'].is_a?(String) if data_type == 'partners'
   end
 end

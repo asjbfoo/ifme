@@ -19,13 +19,13 @@
     })%>
  </div>
 
-  <%= render partial: '/shared/stats', locals: { data_type: 'moment' } %>
-
-  <div class="gridTwo">
-    <%= render @moments %>
-  </div>
-
-  <%= paginate @moments %>
+  <%= render partial: '/shared/stats', locals: { data_type: 'moment', user: current_user } %>
+  <%= react_component('BaseContainer', props: {
+    container: 'StoryContainer',
+    data: moments_or_strategy_props(@moments),
+    fetchUrl: moments_path,
+    lastPage: @moments.last_page?
+  }) %>
 <% else %>
   <%= raw t('moments.index.instructions') %>
   <div class="gridTwo marginTop">

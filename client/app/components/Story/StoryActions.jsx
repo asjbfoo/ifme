@@ -7,6 +7,9 @@ import {
   faLock,
   faDoorOpen,
   faDoorClosed,
+  faExclamationTriangle,
+  faCalendarPlus,
+  faCalendarMinus,
 } from '@fortawesome/free-solid-svg-icons';
 import css from './Story.scss';
 import { Tooltip } from '../Tooltip';
@@ -24,6 +27,9 @@ export type Actions = {
   delete?: Action,
   join?: Action,
   leave?: Action,
+  report?: Action,
+  add_to_google_cal?: Action,
+  remove_from_google_cal?: Action,
   viewers?: string,
 };
 
@@ -37,7 +43,10 @@ const EDIT = 'edit';
 const DELETE = 'delete';
 const JOIN = 'join';
 const LEAVE = 'leave';
+const REPORT = 'report';
 const VIEWERS = 'viewers';
+const ADD_TO_G_CAL = 'add_to_google_cal';
+const REMOVE_FROM_G_CAL = 'remove_from_google_cal';
 
 const classMap = (dark: ?boolean) => {
   const className = dark ? css.actionDark : css.action;
@@ -46,7 +55,16 @@ const classMap = (dark: ?boolean) => {
     delete: <FontAwesomeIcon icon={faTrash} className={className} />,
     join: <FontAwesomeIcon icon={faDoorOpen} className={className} />,
     leave: <FontAwesomeIcon icon={faDoorClosed} className={className} />,
+    report: (
+      <FontAwesomeIcon icon={faExclamationTriangle} className={className} />
+    ),
     viewers: <FontAwesomeIcon icon={faLock} className={className} />,
+    add_to_google_cal: (
+      <FontAwesomeIcon icon={faCalendarPlus} className={className} />
+    ),
+    remove_from_google_cal: (
+      <FontAwesomeIcon icon={faCalendarMinus} className={className} />
+    ),
   };
 };
 
@@ -130,7 +148,16 @@ export const StoryActions = (props: Props) => {
   const { actions, hasStory, dark } = props;
   return (
     <div className={css.actions}>
-      {[JOIN, EDIT, LEAVE, DELETE, VIEWERS].map(
+      {[
+        JOIN,
+        ADD_TO_G_CAL,
+        REMOVE_FROM_G_CAL,
+        EDIT,
+        LEAVE,
+        DELETE,
+        REPORT,
+        VIEWERS,
+      ].map(
         (item: string) => (actions[item] ? displayItem(actions, item, hasStory, dark) : null),
       )}
     </div>

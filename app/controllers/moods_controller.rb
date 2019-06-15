@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class MoodsController < ApplicationController
-  include CollectionPageSetup
+  include CollectionPageSetupConcern
+  include CategoriesHelper
   include Shared
   before_action :set_mood, only: %i[show edit update destroy]
 
@@ -9,6 +10,15 @@ class MoodsController < ApplicationController
   # GET /moods.json
   def index
     page_collection('@moods', 'mood')
+    respond_to do |format|
+      format.json do
+        render json: {
+          data: categories_or_moods_props(@moods),
+          lastPage: @moods.last_page?
+        }
+      end
+      format.html
+    end
   end
 
   # GET /moods/1

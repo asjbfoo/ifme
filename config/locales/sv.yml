@@ -13,6 +13,7 @@ sv:
   no_text: nej
   expand_menu: 'expandera menyn'
   close: stänga
+  load_more: 'Ladda mer'
   languages:
     en: English
     es: Español
@@ -24,6 +25,8 @@ sv:
     it: Italiano
     nb: Norsk
     de: Deutsch
+    fr: Français
+    hi: 'हिंदी'
   navigation:
     about: Om
     blog: Blogg
@@ -64,15 +67,33 @@ sv:
       add_all: 'Lägg till alla'
       select_all: 'Välj alla'
       remove: 'Ta bort'
+      report: Rapportera
     form:
       email: E-post
       location: Plats
       description: Beskrivning
       error_explanation: 'Vänligen fyll i de markerade fälten!'
-      press_enter: 'Tryck på ENTER för att lägga till'
+      empty_error: 'Det här fältet kan inte vara tomt!'
+      search_by_keywords: 'Sök med nyckelord'
     time_ago: '%{date} sedan'
     write_to_us: 'skriv till oss'
     days: dagar
+  reports:
+    admin_dashboard: 'Admin Dashboard'
+    reported_users: 'Rapporterade Användare'
+    banned_users: 'Förbjudna Användare'
+    reasons: Anledningar
+    new: 'Ny rapport för %{name}'
+    remove_ban: 'Ta bort banan'
+    ban_user: 'Stänga av användare'
+    report_sent: 'Rapport för %{name} skickad'
+    report_error: 'Det gick inte att skicka rapport för %{name}'
+    reportee: Reportee
+    reporter: 'Rapporterad av'
+    user_banned: '%{name} har blivit bannlyst'
+    ban_removed: 'Banned borttagen på %{name}'
+    user_banned_error: 'Kunde inte förbyta %{name}'
+    ban_removed_error: 'Kunde inte ta bort förbud mot %{name}'
   comment:
     singular: Kommentar
     plural: Kommentarer
@@ -97,6 +118,9 @@ sv:
       title: Allierade
       outgoing: 'Utgående ansökningar'
       incoming: 'Inkomna förfrågningar'
+      invited: 'Inbjuden via e-post'
+      invited_on: 'Inbjuden till %{date}'
+      invitation_expired: 'Inbjudan utgick'
       invite: 'Bjud in dina nära och kära!'
       none: 'Du har för närvarande inga allierade! Du kan söka efter dem eller bjuda in dina nära och kära!'
       view_all_allies: 'Visa alla allierade'
@@ -177,6 +201,7 @@ sv:
     refill: 'Påfyllning:'
     quantity: 'Total Kvantitet:'
     strength: 'Styrka:'
+    event_summary: 'Fyll på för %{name}.'
     form:
       strength: Styrka
       strength_placeholder: 't.ex. 100'
@@ -241,6 +266,15 @@ sv:
       error: 'Du kan inte lämna mötet, du är den enda ledaren.'
       success: 'Du har lämnat %{meeting}'
     new: 'Nytt Möte'
+    google_cal:
+      create:
+        add: 'Lägg till i Google Kalender'
+        success: 'Möte till Google Kalender framgångsrikt.'
+        error: 'Något gick fel när du tillade mötet i Google Kalender.'
+      destroy:
+        remove: 'Ta bort från Google Kalender'
+        success: 'Möte som tagits bort från Google Kalender framgångsrikt.'
+        error: 'Något gick fel när du tog bort mötet från Google Kalender.'
   moments:
     singular: Ögonblick
     plural: Ögonblicken
@@ -251,6 +285,7 @@ sv:
       singular: 'Hemlig Andel'
       expires_at: 'Förfaller vid'
       cancel_secret_share: 'Annullera Hemlig Andel'
+      link_copied: 'Secret Share länk kopieras till Urklipp'
     form:
       why: 'Vad hände och hur känner du dig?'
       fix: 'Vilka tankar skulle du vilja ha?'
@@ -317,7 +352,7 @@ sv:
       comment_text: '<p><i>%{comment}</i></p>'
       comment_link: '<p>För att läsa den, %{link}!</p>'
       new_group_subject: 'if me | %{user} skapade en grupp "%{group}"'
-      new_group_body: '<p>%{user} skapade en grupp "%{group}":</p><p><i>%{description}</i></p><p>För att lära sig mer och gå med, %{link}!</p><p>Vänligen följ vår %{link_to_code_of_conduct}!</p>'
+      new_group_body: '<p>%{user} skapade en grupp "%{group}":</p><p><i>%{description}</i></p><p>För att lära sig mer och gå med, %{link}!</p><p>Vänligen följ vår %{code_of_conduct_link}!</p>'
       new_group_member_subject: 'if me | %{user} gick med i din grupp "%{group}"'
       add_group_leader_you_subject: 'if me | Du blev ledare för "%{group}"'
       add_group_leader_subject: 'if me | %{user} blev ledare för " %{group}"'
@@ -332,6 +367,14 @@ sv:
       remove_meeting_subject: 'if me | %{user} har avbrutit "%{meeting}" för "%{group}"'
       join_meeting_subject: 'if me | %{user} anslöt sig "%{meeting}" för "%{group}"'
       join_meeting_body: '<p>För att se "%{meeting}", %{link}!</p>'
+      reported_user_subject: 'if me | Du har rapporterat en användare'
+      reported_user_body: 'Du har rapporterat %{reported_name}. Detta kommer att granskas av en admin.'
+      reportee_user_subject: 'if me | Du har rapporterats'
+      reportee_user_body: 'Du har rapporterats. Detta kommer att granskas av en admin.'
+      add_ban_subject: 'if me | Du har förbjudits'
+      add_ban_body: 'Du har blivit bannad för att bryta mot vår %{code_of_conduct_link}.'
+      remove_ban_subject: 'if me | Du är inte längre förbjuden'
+      remove_ban_body: 'Du var tidigare förbjuden att bryta mot vår %{code_of_conduct_link}. Du är inte längre förbjuden.'
   omniauth:
     google: Google
     access_denied: 'Åtkomst nekad'
@@ -350,6 +393,7 @@ sv:
     blog:
       description: 'Om du är intresserad av att skriva för oss, pitcha oss på %{email}! Vi välkomnar anonyma inlägg också.'
     contribute:
+      contributor_avatar_alt: 'Bidragsgivare biografi för %{name}'
       main_message_one: 'if me är byggs och underhålls av volontärer med många olika bakgrunder och kunskaper.'
       message_text_one: 'Vi letar alltid efter idéer från alla, inklusive <strong>mental hälsa-förespråkare</strong>, <strong>hälsoproffs</strong>, <strong>mjukvaruutvecklare</strong>, <strong>översättare</strong>, och <strong>användarupplevelse-designers</strong>!<p class="noMarginBottom">Vänligen %{email_link} och vi kommer att kontakta dig! Du kommer bli inbjuden att delta i vår %{slack_link} sida, vårt primära kommunikationsverktyg. Forka vår kodbas som hostas på %{github_link}!</p>'
       more_contributors: 'Mer Fantastiska Bidragsgivare!'
@@ -376,6 +420,10 @@ sv:
       email_notifications_question: 'Hur kan jag ändra e-postmeddelanden?'
       email_notifications_answer: 'Gå till <strong>%{accounts}</strong> sidan. Du kan ändra din e-postadress, lösenord, profilbild och bio här. Du kan också ta bort ditt konto. När du har raderat ditt konto raderas alla dina data.'
     home:
+      update_pwd_modal:
+        title: 'Uppdatera lösenordet'
+        body: 'Vi har genomfört bättre säkerhetsåtgärder för våra användare, tack %{update_password_link}'
+        update_link: 'uppdatera lösenordet'
       stories: Berättelser
       not_signed_in:
         main_message_one: 'Bättre kommunikation med nära och kära leder till bättre mental hälsa.'
@@ -412,6 +460,7 @@ sv:
       contact: 'Kontakta Oss'
       contact_description: '<p>Vänligen %{email_link} om du har några frågor eller problem.</p><p class="noMarginBottom"><em>Sekretesspolicy anpassad från %{jamie_king_media}.</em></p>'
     resources:
+      description: 'Det här är vår kurerade lista över mentala resurser, som inkluderar samhällen, pedagogiska verktyg, hotlines och tjänster.'
       communities: Gemenskaperna
       education: Utbildning
       hotlines: Direktlinje
@@ -426,7 +475,7 @@ sv:
         therapy: terapi
         counseling: rådgivning
         youth: ungdom
-        lgbtqia: LGBTQIA
+        lgbt: LGBT
         harassment: trakasserier
         self_care: egenvård
         women: kvinnor
@@ -494,6 +543,17 @@ sv:
         sexual_assault_survivors: 'Överlevande av sexuella övergrepp'
         political_movement: 'politisk rörelse'
         reporting: rapportering
+        game: spel
+        stress: påfrestning
+        fidget: fidget
+        colouring: färg
+        deaf: döv
+        asl: ASL
+        latinx: latinx
+        hispanic: latinamerikan
+        senior_citizens: pensionärer
+        black_people: 'Mörka personer'
+        sexual_health: 'sexuell hälsa'
   profile:
     index:
       title: Profil
@@ -619,12 +679,16 @@ sv:
       meeting_notify_text: Mötesuppdateringar
       google_auth1: 'Om du inte längre vill verifieras med Google anger du ett nytt e-post och lösenord.'
       google_auth2: 'Eftersom du är autentiserad med Google behöver du inte ange ditt lösenord. <br> Om du vill ändra detta anger du en ny e-postadress och lösenord.'
+      password_errors:
+        format: 'bör innehålla 8 till 128 tecken, inklusive 1 versal, 1 små bokstav, 1 siffra och 1 specialtecken.'
+        used: 'måste skilja sig från de senaste tre lösenorden.'
       placeholders:
         repeat_password: 'Repetera lösenord'
       edit:
         labels:
           profile_picture: Profilbild
           remove_picture: 'Ta bort bilden'
+          about: Om
           password_for: 'Lösenord för <strong>if me</strong>-konto'
           update: Uppdatering
         placeholders:

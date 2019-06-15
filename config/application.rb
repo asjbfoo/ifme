@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'boot'
+require_relative 'locale'
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -47,11 +48,10 @@ module Ifme
       'Strict-Transport-Security' => 'max-age=31536000'
     }
 
-    # gzip the html/json responses
     config.middleware.use Rack::Deflater,
-      include: %w[text/html application/json image/svg+xml]
+                          include: %w[text/html application/json image/svg+xml]
 
-    config.i18n.available_locales = ['en', 'es', 'de', 'it', 'nb', 'nl', 'pt-BR', 'sv', 'vi'].map &:to_sym
+    config.i18n.available_locales = Locale.available_locales.sort_by(&:swapcase).map &:to_sym
     config.i18n.default_locale = :en
   end
 end

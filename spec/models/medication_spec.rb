@@ -3,10 +3,10 @@
 #
 # Table name: medications
 #
-#  id                :integer          not null, primary key
+#  id                :bigint(8)        not null, primary key
 #  name              :string
 #  dosage            :integer
-#  refill            :string
+#  refill            :datetime
 #  created_at        :datetime
 #  updated_at        :datetime
 #  user_id           :integer
@@ -18,7 +18,7 @@
 #  comments          :text
 #  slug              :string
 #  add_to_google_cal :boolean          default(FALSE)
-#  weekly_dosage      integer[]         [0, 1, 2, 3, 4, 5, 6]
+#  weekly_dosage     :integer          default(["0", "1", "2", "3", "4", "5", "6"]), is an Array
 #
 
 describe Medication do
@@ -75,7 +75,7 @@ describe Medication do
 
   describe 'daily?' do
     let(:user) { FactoryBot.create(:user1) }
-    let(:weekly_medication) { FactoryBot.create(:medication, user_id: user.id, weekly_dosage: [1,2,3,4]) }
+    let(:weekly_medication) { FactoryBot.create(:medication, user_id: user.id, weekly_dosage: [1, 2, 3, 4]) }
     let(:daily_medication) { FactoryBot.create(:medication, user_id: user.id) }
 
     it 'is weekly medication' do

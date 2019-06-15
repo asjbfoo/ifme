@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   get 'errors/not_found'
   get 'errors/internal_server_error'
@@ -5,14 +7,14 @@ Rails.application.routes.draw do
   get '/404' => 'errors#not_found'
   get '/500' => 'errors#internal_server_error'
 
-  resources :allies, except: [:show, :new, :create, :edit, :update, :destroy] do
+  resources :allies, only: :index do
     collection do
       post 'add'
       post 'remove'
     end
   end
 
-  resources :comment, only: [:create, :destroy] do
+  resources :comment, only: %i[create destroy] do
     collection do
       post 'create'
       delete 'delete'
@@ -37,7 +39,7 @@ Rails.application.routes.draw do
 
   resources :moments
 
-  resources :secret_shares, only: [:create, :show, :destroy]
+  resources :secret_shares, only: %i[create show destroy]
 
   resources :strategies do
     collection do
@@ -48,7 +50,7 @@ Rails.application.routes.draw do
 
   resources :groups do
     scope module: :groups do
-      resource :membership, only: [:create, :destroy] do
+      resource :membership, only: %i[create destroy] do
         delete ':member_id', to: 'memberships#kick', as: 'kick'
       end
     end
@@ -59,17 +61,30 @@ Rails.application.routes.draw do
       get 'join'
       get 'leave'
     end
+    resource :google_calendar_event, controller: 'meetings/google_calendar_event', only: %i[create destroy]
   end
 
-  resources :profile, except: [:show, :new, :create, :edit, :update, :destroy]
+  resources :profile, only: :index do
+    collection do
+      post 'add_ban'
+      post 'remove_ban'
+      get 'data', defaults: { format: 'json' }
+    end
+  end
 
-  resources :search, except: [:show, :new, :create, :edit, :update, :destroy] do
+  resources :reports, only: %i[create new] do
+    collection do
+      get 'admin_dashboard'
+    end
+  end
+
+  resources :search, only: :index do
     collection do
       get 'posts'
     end
   end
 
-  resources :notifications, except: [:show, :new, :create, :edit, :update] do
+  resources :notifications, only: %i[destroy index] do
     collection do
       delete 'clear'
       get 'fetch_notifications'
@@ -79,6 +94,7 @@ Rails.application.routes.draw do
 
   get 'pages/home'
   match 'about', to: 'pages#about', via: :get
+  match 'admin_dashboard', to: 'pages#admin_dashboard', via: :get
   match 'contribute', to: 'pages#contribute', via: :get
   match 'partners', to: 'pages#partners', via: :get
   match 'privacy', to: 'pages#privacy', via: :get
@@ -86,11 +102,12 @@ Rails.application.routes.draw do
   match 'toggle_locale', to: 'pages#toggle_locale', via: :post
   match 'press', to: 'pages#press', via: :get
   match 'resources', to: 'pages#resources', via: :get
+  get 'home_data', to: 'pages#home_data', defaults: { format: 'json' }
 
   devise_for :users, controllers: { registrations: :registrations,
-                                       omniauth_callbacks: 'omniauth_callbacks',
-                                       invitations: 'users/invitations',
-                                       sessions: :sessions }
+                                    omniauth_callbacks: 'omniauth_callbacks',
+                                    invitations: 'users/invitations',
+                                    sessions: :sessions }
 
   post 'pusher/auth'
 
